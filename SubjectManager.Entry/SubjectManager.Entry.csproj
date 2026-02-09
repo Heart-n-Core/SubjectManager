@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Subject_Manager</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SubjectManager.Model\SubjectManager.Model.csproj" />
+      <ProjectReference Include="..\SubjectManager.Services\SubjectManager.Services.csproj" />
+      <ProjectReference Include="..\SubjectManager.Utils\SubjectManager.Utils.csproj" />
+    </ItemGroup>
+
+</Project>
