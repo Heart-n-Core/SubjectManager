@@ -28,7 +28,7 @@ class Program
                 case "subjects":
                 {
                     Console.WriteLine("Displaying all subjects");
-                    var subjects = Utils.GetIndexedSubjects(subjectService.getAllSubjects());
+                    var subjects = Utils.GetIndexedSubjects(subjectService.GetAllSubjects());
                     foreach (var subject in subjects)
                     {
                         Console.WriteLine(subject.Key);
@@ -48,7 +48,7 @@ class Program
                         try
                         {
                             int index = int.Parse(inputIndex);
-                            if (index < 1 || index > subjectService.getAllSubjects().Count)
+                            if (index < 1 || index > subjectService.GetAllSubjects().Count)
                                 throw new Exception();
                             Console.WriteLine("Displaying selected subject");
                             Console.WriteLine(subjects[index].allData);

@@ -16,7 +16,7 @@ public class LessonService
         return LessonRepository.GetAllLessonsBySubjectId(subjecId);
     }
 
-    public static LessonView GetLessonById(Guid id)
+    public LessonView GetLessonById(Guid id)
     {
         var view = LessonRepository.GetLessonById(id);
         return view ?? throw new KeyNotFoundException($"Lesson with ID {id} not found");

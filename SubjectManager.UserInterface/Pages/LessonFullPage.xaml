@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SubjectManager.UserInterface.Pages.LessonFullPage">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="10">
+
+            <Label x:Name="TopicLabel" FontSize="20" />
+            <Label x:Name="TypeLabel" />
+            <Label x:Name="BeginLabel" />
+            <Label x:Name="EndLabel" />
+            <Label x:Name="DurationLabel" />
+
+            <Button Text="Back to Lesson"
+                    Clicked="OnBackClicked"
+                    Margin="0,20,0,0"/>
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

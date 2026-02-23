@@ -5,7 +5,7 @@ namespace Services;
 
 public class SubjectService
 {
-    public List<SubjectView> getAllSubjects()
+    public List<SubjectView> GetAllSubjects()
     {
         return SubjectRepository.GetAllSubjects();
     }
