@@ -3,22 +3,29 @@ using SubjectManager.Model.View;
 
 namespace Services.Storage;
 
-internal static class SubjectRepository
+public class SubjectRepository : ISubjectRepository
 {
-    public static List<SubjectView> GetAllSubjects()
+    private ILessonRepository _lessonRepository;
+
+    public SubjectRepository(ILessonRepository lessonRepository)
+    {
+        _lessonRepository = lessonRepository;
+    }
+    
+    public List<SubjectView> GetAllSubjects()
     {
         return PrimitiveStorage.Subjects.Select(mapToView).ToList();
     }
 
-    public static SubjectView? GetSubjectById(Guid id)
+    public SubjectView? GetSubjectById(Guid id)
     {
         var entity = PrimitiveStorage.Subjects.SingleOrDefault(x => x.Id == id);
         return entity == null ? null : mapToView(entity);
     }
 
-    private static SubjectView mapToView(SubjectEntity entity)
+    private SubjectView mapToView(SubjectEntity entity)
     {
-        var lessons = LessonRepository.GetAllLessonsBySubjectId(entity.Id);
+        var lessons = _lessonRepository.GetAllLessonsBySubjectId(entity.Id);
         var view = new SubjectView(
             entity.Name,
             entity.Credits,
@@ -29,7 +36,7 @@ internal static class SubjectRepository
         return view;
     }
 
-    public static SubjectEntity PutSubjectEntity(SubjectView view)
+    public SubjectEntity PutSubjectEntity(SubjectView view)
     {
         var entity = view.Id==null ? new SubjectEntity() : PrimitiveStorage.Subjects.Single(x => x.Id == view.Id);
         
@@ -41,6 +48,16 @@ internal static class SubjectRepository
             PrimitiveStorage.Subjects.Add(entity);
         
         return entity;
+    }
+    
+    public void DeleteSubject(Guid id)
+    {
+        var entity = PrimitiveStorage.Subjects.SingleOrDefault(x => x.Id == id);
+
+        if (entity == null)
+            throw new KeyNotFoundException($"Subject with ID {id} not found");
+
+        PrimitiveStorage.Subjects.Remove(entity);
     }
 
 }

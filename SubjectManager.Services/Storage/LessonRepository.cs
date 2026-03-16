@@ -3,14 +3,14 @@ using SubjectManager.Model.View;
 
 namespace Services.Storage;
 
-internal static class LessonRepository
+public class LessonRepository : ILessonRepository
 {
-    public static List<LessonView> GetAllLessons()
+    public List<LessonView> GetAllLessons()
     {
         return PrimitiveStorage.Lessons.Select(mapToView).ToList();
     }
 
-    public static List<LessonView> GetAllLessonsBySubjectId(Guid subjecId)
+    public List<LessonView> GetAllLessonsBySubjectId(Guid subjecId)
     {
         return PrimitiveStorage.Lessons
             .Where(x => x.SubjectId == subjecId)
@@ -18,7 +18,7 @@ internal static class LessonRepository
             .ToList();    
     }
     
-    public static LessonView? GetLessonById(Guid id)
+    public LessonView? GetLessonById(Guid id)
     {
         var entity = PrimitiveStorage.Lessons.SingleOrDefault(x => x.Id == id);
         return entity == null ? null : mapToView(entity);
@@ -37,7 +37,7 @@ internal static class LessonRepository
         return view;
     }
     
-    public static LessonEntity PutLessonEntity(LessonView view)
+    public LessonEntity PutLessonEntity(LessonView view)
     {
         var entity = view.Id==null ? new LessonEntity() : PrimitiveStorage.Lessons.Single(x => x.Id == view.Id);
 
@@ -54,5 +54,15 @@ internal static class LessonRepository
             PrimitiveStorage.Lessons.Add(entity);
         
         return entity;
+    }
+    
+    public void DeleteLessonEntity(Guid id)
+    {
+        var entity = PrimitiveStorage.Lessons.SingleOrDefault(x => x.Id == id);
+        
+        if (entity == null)
+            throw new KeyNotFoundException($"Lesson with ID {id} not found");
+        
+        PrimitiveStorage.Lessons.Remove(entity);
     }
 }

@@ -1,30 +1,22 @@
-﻿namespace SubjectManager.UserInterface.Pages;
+﻿using SubjectManager.UserInterface.ViewModels;
 
-using Services;
-using SubjectManager.Model.View;
+namespace SubjectManager.UserInterface.Pages;
 
 public partial class MainPage : ContentPage
 {
-    private readonly SubjectService _subjectService;
-
-    public MainPage(SubjectService subjectService)
+    public MainPage(MainPageViewModel viewModel)
     {
         InitializeComponent();
-        _subjectService = subjectService;
+        BindingContext = viewModel;
     }
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        SubjectsCollection.ItemsSource = _subjectService.GetAllSubjects();
-    }
-
-    private async void OnSubjectSelected(object sender, SelectionChangedEventArgs e)
-    {
-        if (e.CurrentSelection.FirstOrDefault() is SubjectView selectedSubject)
+    
+        if (BindingContext is MainPageViewModel vm)
         {
-            await Shell.Current.GoToAsync(
-                $"{nameof(SubjectFullPage)}?subjectId={selectedSubject.Id}");
+            vm.LoadSubjectsCommand.Execute(null);
         }
     }
 }

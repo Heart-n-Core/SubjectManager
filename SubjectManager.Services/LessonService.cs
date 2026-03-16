@@ -1,24 +1,30 @@
-using SubjectManager.Model.Entity;
-using SubjectManager.Model.View;
 using Services.Storage;
+using SubjectManager.Model.View;
 
 namespace Services;
 
-public class LessonService
+public class LessonService : ILessonService
 {
+    private ILessonRepository _lessonRepository;
+
+    public LessonService(ILessonRepository lessonRepository)
+    {
+        _lessonRepository = lessonRepository;
+    }
+    
     public List<LessonView> GetAllLessons()
     {
-        return LessonRepository.GetAllLessons();
+        return _lessonRepository.GetAllLessons();
     }
 
     public List<LessonView> GetAllLessonsBySubjectId(Guid subjecId)
     {
-        return LessonRepository.GetAllLessonsBySubjectId(subjecId);
+        return _lessonRepository.GetAllLessonsBySubjectId(subjecId);
     }
 
     public LessonView GetLessonById(Guid id)
     {
-        var view = LessonRepository.GetLessonById(id);
+        var view = _lessonRepository.GetLessonById(id);
         return view ?? throw new KeyNotFoundException($"Lesson with ID {id} not found");
     }
 
@@ -28,8 +34,8 @@ public class LessonService
         {
             throw new ArgumentException("Lesson with Id " + view.Id + " already exists");
         }
-        validateViewFields(view);
-        LessonRepository.PutLessonEntity(view);
+        ValidateViewFields(view);
+        _lessonRepository.PutLessonEntity(view);
     }
 
     public void UpdateLesson(LessonView view)
@@ -38,21 +44,21 @@ public class LessonService
         {
             throw new ArgumentException("Missing Id");
         }
-        validateViewFields(view);
-        var ex = LessonRepository.GetLessonById(view.Id.Value);
+        ValidateViewFields(view);
+        var ex = _lessonRepository.GetLessonById(view.Id.Value);
         if (ex == null)
         {
             throw new KeyNotFoundException($"Lesson with ID {view.Id} not found");
         }
-        LessonRepository.PutLessonEntity(view);
+        _lessonRepository.PutLessonEntity(view);
     }
 
-    public static void deleteLesson(Guid id)
+    public void DeleteLesson(Guid id)
     {
-        //TODO delete lesson
+        _lessonRepository.DeleteLessonEntity(id);
     }
 
-    private static void validateViewFields(LessonView view)
+    private static void ValidateViewFields(LessonView view)
     {
         //TODO validate lesson
     }

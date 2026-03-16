@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\SubjectManager.Model\SubjectManager.Model.csproj" />
+      <ProjectReference Include="..\SubjectManager.CommonComponents\SubjectManager.CommonComponents.csproj" />
     </ItemGroup>
 
 </Project>

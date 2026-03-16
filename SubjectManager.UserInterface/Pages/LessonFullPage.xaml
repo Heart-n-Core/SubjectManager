@@ -1,20 +1,22 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SubjectManager.UserInterface.Pages.LessonFullPage">
+             xmlns:viewModels="clr-namespace:SubjectManager.UserInterface.ViewModels"
+             x:Class="SubjectManager.UserInterface.Pages.LessonFullPage"
+             x:DataType="viewModels:LessonFullViewModel">
 
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="10">
 
-            <Label x:Name="TopicLabel" FontSize="20" />
-            <Label x:Name="TypeLabel" />
-            <Label x:Name="BeginLabel" />
-            <Label x:Name="EndLabel" />
-            <Label x:Name="DurationLabel" />
+            <Label Text="{Binding Lesson.Topic, StringFormat='Topic: {0}'}" FontSize="20"/>
+            <Label Text="{Binding Lesson.LessonType, StringFormat='Type: {0}'}"/>
+            <Label Text="{Binding Lesson.BeginDate, StringFormat='Begin: {0}'}"/>
+            <Label Text="{Binding Lesson.EndDate, StringFormat='End: {0}'}"/>
+            <Label Text="{Binding Lesson.Duration, StringFormat='Duration: {0}'}"/>
 
             <Button Text="Back to Lesson"
-                    Clicked="OnBackClicked"
+                    Command="{Binding BackCommand}"
                     Margin="0,20,0,0"/>
+
         </VerticalStackLayout>
     </ScrollView>
 

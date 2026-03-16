@@ -1,4 +1,4 @@
-namespace SubjectManager.Model.Enum;
+namespace SubjectManager.CommonComponents.Enum;
 
 public enum LessonType
 {

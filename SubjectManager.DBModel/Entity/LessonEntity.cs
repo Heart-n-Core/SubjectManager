@@ -1,4 +1,4 @@
-using SubjectManager.Model.Enum;
+using SubjectManager.CommonComponents.Enum;
 
 namespace SubjectManager.Model.Entity;
 

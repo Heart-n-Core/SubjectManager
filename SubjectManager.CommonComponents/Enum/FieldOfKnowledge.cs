@@ -1,4 +1,6 @@
-namespace SubjectManager.Model.Enum;
+// using System.ComponentModel.DataAnnotations;
+
+namespace SubjectManager.CommonComponents.Enum;
 
 public enum FieldOfKnowledge
 {

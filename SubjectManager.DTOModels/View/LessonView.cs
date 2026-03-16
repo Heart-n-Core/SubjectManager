@@ -1,34 +1,18 @@
-using System.Text;
-using SubjectManager.Model.Enum;
+using SubjectManager.CommonComponents.Enum;
 
 namespace SubjectManager.Model.View;
 
 public class LessonView
 {
-//Actual code
-    public TimeSpan Duration => EndDate - BeginDate;
-
-    public LessonView(Guid subjectId, string topic, LessonType lessonType, DateTimeOffset beginDate, DateTimeOffset endDate)    //No id here and that's okay
-    {
-        _subjectId = subjectId;
-        _topic = topic;
-        _lessonType = lessonType;
-        _beginDate = beginDate;
-        _endDate = endDate;
-    }
     
-    public override string ToString()
-    {
-        return $"Topic: {Topic}; LessonType: {LessonType}; BeginDate: {BeginDate}; EndDate: {EndDate}; Duration: {Duration}";
-    }
-    
-//Boilerplate
     private Guid? _id;
     private Guid _subjectId;
     private string _topic;
     private LessonType _lessonType;
     private DateTimeOffset  _beginDate;
     private DateTimeOffset _endDate;
+
+    public TimeSpan Duration => EndDate - BeginDate;
 
     public Guid? Id
     {
@@ -41,7 +25,7 @@ public class LessonView
         get => _subjectId;
         // set => _subjectId = value;
     }
-
+    
     public string Topic
     {
         get => _topic;
@@ -66,4 +50,19 @@ public class LessonView
         get => _endDate;
         set => _endDate = value;
     }
+    
+    public LessonView(Guid subjectId, string topic, LessonType lessonType, DateTimeOffset beginDate, DateTimeOffset endDate)    //No id here and that's okay
+    {
+        _subjectId = subjectId;
+        _topic = topic;
+        _lessonType = lessonType;
+        _beginDate = beginDate;
+        _endDate = endDate;
+    }
+    
+    public override string ToString()
+    {
+        return $"Topic: {Topic}; LessonType: {LessonType}; BeginDate: {BeginDate}; EndDate: {EndDate}; Duration: {Duration}";
+    }
+
 }

@@ -1,37 +1,19 @@
-using System.Text;
-using SubjectManager.Model.Enum;
+using SubjectManager.CommonComponents.Enum;
 
 namespace SubjectManager.Model.View;
 
 public class SubjectView
 {
-    //Actual code
-    public TimeSpan DurationTotal {
-        get => _lessons.Aggregate(TimeSpan.Zero, (total, lesson) => total + lesson.Duration);
-    }
-    
-    public SubjectView(string name, int credits, FieldOfKnowledge fieldOfKnowledge)
-    {
-        _name = name;
-        _credits = credits;
-        _fieldOfKnowledge = fieldOfKnowledge;
-    }
-    
-    public override string ToString()
-    {
-        return $"Name: {Name}; Credits: {Credits}; FieldOfKnowledge: {_fieldOfKnowledge}; TotalDuration: {DurationTotal}";
-    }
-    
-    public String allData => ToString()+"\nSubject's lessons:\n"+string.Join("\n", _lessons);
-
-
-    //Boilerplate
     private Guid? _id;
     private string _name;
     private int _credits;
     private FieldOfKnowledge _fieldOfKnowledge;
     private List<LessonView> _lessons;
-
+    
+    public TimeSpan DurationTotal {
+        get => _lessons.Aggregate(TimeSpan.Zero, (total, lesson) => total + lesson.Duration);
+    }
+    
     public Guid? Id
     {
         get => _id;
@@ -64,5 +46,17 @@ public class SubjectView
         // set => _lessons = value ?? throw new ArgumentNullException(nameof(value));
     }
     
+    public String AllData => ToString()+"\nSubject's lessons:\n"+string.Join("\n", _lessons);
     
+    public SubjectView(string name, int credits, FieldOfKnowledge fieldOfKnowledge)
+    {
+        _name = name;
+        _credits = credits;
+        _fieldOfKnowledge = fieldOfKnowledge;
+    }
+    
+    public override string ToString()
+    {
+        return $"Name: {Name}; Credits: {Credits}; FieldOfKnowledge: {_fieldOfKnowledge}; TotalDuration: {DurationTotal}";
+    }
 }

@@ -1,5 +1,5 @@
 using SubjectManager.Model.Entity;
-using SubjectManager.Model.Enum;
+using SubjectManager.CommonComponents.Enum;
 
 namespace Services.Storage;
 
@@ -7,8 +7,8 @@ using SubjectManager.Model;
 
 internal static class PrimitiveStorage
 {
-    private static readonly List<SubjectEntity> _subjects;
-    private static readonly List<LessonEntity> _lessons;
+    private static readonly List<SubjectEntity> _subjects = new List<SubjectEntity>();
+    private static readonly List<LessonEntity> _lessons = new List<LessonEntity>();
     internal static List<SubjectEntity> Subjects => _subjects;
     internal static List<LessonEntity> Lessons => _lessons;
 
@@ -16,10 +16,10 @@ internal static class PrimitiveStorage
     {
         _subjects = [];
         _lessons = [];
-        populateDemoData();
+        PopulateDemoData();
     }
 
-    private static void populateDemoData()
+    private static void PopulateDemoData()
     {
         var s1 = new SubjectEntity("Об'єктно-орієнтоване програмування", 5, FieldOfKnowledge.ComputerSciences);
         _subjects.Add(s1);

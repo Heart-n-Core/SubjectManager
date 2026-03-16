@@ -1,30 +1,33 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SubjectManager.UserInterface.Pages.MainPage">
+             xmlns:viewModels="clr-namespace:SubjectManager.UserInterface.ViewModels"
+             xmlns:view="using:SubjectManager.Model.View"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:DataType="viewModels:MainPageViewModel"
+             x:Class="SubjectManager.UserInterface.Pages.MainPage"
+             Title="Subjects">
 
-    <ScrollView>
-        <VerticalStackLayout
-            Padding="30,0"
-            Spacing="25">
-            <CollectionView
-                x:Name="SubjectsCollection"
-                SelectionMode="Single"
-                SelectionChanged="OnSubjectSelected">
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior EventName="Appearing" Command="{Binding LoadSubjectsCommand}" />
+    </ContentPage.Behaviors>
 
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame Padding="20" Margin="10" BackgroundColor="{StaticResource ItemList}">
-                            <VerticalStackLayout>
-                                <Label Text="{Binding Name}" FontSize="18" />
-                                <Label Text="{Binding FieldOfKnowledge}" FontSize="14" />
-                            </VerticalStackLayout>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
+    <Grid>
+        <CollectionView
+            ItemsSource="{Binding Subjects}"
+            SelectionMode="Single"
+            SelectedItem="{Binding SelectedSubject}"
+            SelectionChangedCommand="{Binding SubjectSelectedCommand}">
 
-            </CollectionView>
-        </VerticalStackLayout>
-    </ScrollView>
-
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="view:SubjectListItem">
+                    <Frame Padding="20" Margin="10" BackgroundColor="{StaticResource ItemList}">
+                        <VerticalStackLayout>
+                            <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold" />
+                            <Label Text="{Binding FieldOfKnowledge, Converter={StaticResource CamelCaseConverter}}" FontSize="14" />
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
 </ContentPage>

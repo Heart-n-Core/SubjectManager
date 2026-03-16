@@ -4,6 +4,11 @@
         <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <RootNamespace>SubjectManager.Model</RootNamespace>
     </PropertyGroup>
+    
+    <ItemGroup>
+        <ProjectReference Include="..\SubjectManager.CommonComponents\SubjectManager.CommonComponents.csproj" />
+    </ItemGroup>
 
 </Project>
