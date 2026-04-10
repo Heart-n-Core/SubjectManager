@@ -1,0 +1,30 @@
+﻿<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:SubjectManager.UserInterface.ViewModels"
+    xmlns:global="clr-namespace:"
+    x:Class="SubjectManager.UserInterface.Pages.LessonEditPage"
+    x:DataType="global:LessonEditViewModel"
+    Title="Lesson">
+
+    <VerticalStackLayout Padding="20" Spacing="10">
+
+        <Entry Placeholder="Topic" Text="{Binding Topic}" />
+
+        <Picker Title="Lesson Type"
+                ItemsSource="{Binding LessonTypes}"
+                SelectedItem="{Binding SelectedLessonType}" />
+
+        <Label Text="Begin Date" />
+        <DatePicker Date="{Binding BeginDate, Mode=TwoWay}" />
+        <TimePicker Time="{Binding BeginTime, Mode=TwoWay}" />
+
+        <Label Text="End Date" />
+        <DatePicker Date="{Binding EndDate, Mode=TwoWay}" />
+        <TimePicker Time="{Binding EndTime, Mode=TwoWay}" />
+
+        <Button Text="Save" Command="{Binding SaveCommand}" />
+        <Button Text="Cancel" Command="{Binding CancelCommand}" />
+
+    </VerticalStackLayout>
+</ContentPage>

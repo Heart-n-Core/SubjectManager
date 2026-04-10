@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Maui;
-using Microsoft.Extensions.Logging;
 using Services;
-using Services.Storage;
+using Storage;
 using SubjectManager.UserInterface.Pages;
 using SubjectManager.UserInterface.ViewModels;
 
@@ -21,25 +20,12 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
         
+        builder.Services.AddSingleton<IStorage, FileStorage>();
+        
         builder.Services.AddSingleton<ILessonRepository, LessonRepository>();
-        
-        builder.Services.AddSingleton<ISubjectRepository>(sp =>
-        {
-            var lessonRepo = sp.GetRequiredService<ILessonRepository>();
-            return new SubjectRepository(lessonRepo);
-        });
-        
-        builder.Services.AddSingleton<ILessonService>(sp =>
-        {
-            var lessonRepo = sp.GetRequiredService<ILessonRepository>();
-            return new LessonService(lessonRepo);
-        });
-        
-        builder.Services.AddSingleton<ISubjectService>(sp =>
-        {
-            var subjectRepo = sp.GetRequiredService<ISubjectRepository>();
-            return new SubjectService(subjectRepo);
-        });
+        builder.Services.AddSingleton<ISubjectRepository, SubjectRepository>();
+        builder.Services.AddSingleton<ILessonService, LessonService>();
+        builder.Services.AddSingleton<ISubjectService, SubjectService>();
         
         builder.Services.AddTransient<MainPageViewModel>();
         builder.Services.AddTransient<MainPage>();
@@ -49,6 +35,12 @@ public static class MauiProgram
         
         builder.Services.AddTransient<LessonFullViewModel>();
         builder.Services.AddTransient<LessonFullPage>();
+        
+        builder.Services.AddTransient<LessonEditViewModel>();
+        builder.Services.AddTransient<LessonEditPage>();
+        
+        builder.Services.AddTransient<SubjectEditViewModel>();
+        builder.Services.AddTransient<SubjectEditPage>();
         
         return builder.Build();
     }

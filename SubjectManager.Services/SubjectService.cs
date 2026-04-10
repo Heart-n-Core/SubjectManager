@@ -1,61 +1,81 @@
 using SubjectManager.Model.View;
-using Services.Storage;
+using Storage;
+using SubjectManager.Model.Entity;
 
 namespace Services;
 
 public class SubjectService : ISubjectService
 {
-    private ISubjectRepository _subjectRepository;
+    private readonly ISubjectRepository _subjectRepository;
 
-    // public SubjectService(ISubjectRepository subjectRepository, ILessonRepository lessonRepository)
     public SubjectService(ISubjectRepository subjectRepository)
     {
         _subjectRepository = subjectRepository;
     }
-    
-    public List<SubjectView> GetAllSubjects()
-    {
-        return _subjectRepository.GetAllSubjects();
-    }
-    
-    public SubjectView GetSubjectById(Guid id)
-    {
-        var view = _subjectRepository.GetSubjectById(id);
-        return view ?? throw new KeyNotFoundException($"Subject with ID {id} not found");
-    }
 
-    public void CreateSubject(SubjectView view)
+    public async IAsyncEnumerable<SubjectView> GetAllSubjectsAsync()
     {
-        if (view.Id!=null)
+        await foreach (var entity in _subjectRepository.GetAllSubjectsAsync())
         {
-            throw new ArgumentException("Subject with Id " + view.Id + " already exists");
+            yield return MapToView(entity);
         }
-        ValidateViewFields(view);
-        _subjectRepository.PutSubjectEntity(view);
     }
 
-    public void UpdateSubject(SubjectView view)
+    public async Task<SubjectView> GetSubjectByIdAsync(Guid id)
     {
-        if (view.Id==null)
-        {
+        var entity = await _subjectRepository.GetSubjectByIdAsync(id);
+        return MapToView(entity);
+    }
+
+    public async Task CreateSubjectAsync(SubjectView view)
+    {
+        if (view.Id != null && view.Id != Guid.Empty)
+            throw new ArgumentException($"Subject with Id {view.Id} already exists");
+
+        ValidateViewFields(view);
+
+        await _subjectRepository.PutSubjectEntityAsync(view);
+    }
+
+    public async Task UpdateSubjectAsync(SubjectView view)
+    {
+        if (view.Id == null || view.Id == Guid.Empty)
             throw new ArgumentException("Missing Id");
-        }
+
         ValidateViewFields(view);
-        var ex = _subjectRepository.GetSubjectById(view.Id.Value);
-        if (ex == null)
-        {
-            throw new KeyNotFoundException($"Subject with ID {view.Id} not found");
-        }
-        _subjectRepository.PutSubjectEntity(view);
+
+        // Ensure entity exists
+        await _subjectRepository.GetSubjectByIdAsync(view.Id.Value);
+
+        await _subjectRepository.PutSubjectEntityAsync(view);
     }
 
-    public void DeleteSubject(Guid id)
+    public async Task DeleteSubjectAsync(Guid id)
     {
-        _subjectRepository.DeleteSubject(id);
+        await _subjectRepository.DeleteSubjectAsync(id);
     }
 
     private static void ValidateViewFields(SubjectView view)
     {
-        //TODO validate Subject
+        if (string.IsNullOrWhiteSpace(view.Name))
+            throw new ArgumentException("Name is required");
+
+        if (view.Credits <= 0)
+            throw new ArgumentException("Credits must be greater than 0");
+
+        if (view.FieldOfKnowledge <= 0)
+            throw new ArgumentException("Field of knowledge is required");
+    }
+
+    private SubjectView MapToView(SubjectEntity entity)
+    {
+        return new SubjectView(
+            entity.Name,
+            entity.Credits,
+            entity.FieldOfKnowledge
+        )
+        {
+            Id = entity.Id
+        };
     }
 }

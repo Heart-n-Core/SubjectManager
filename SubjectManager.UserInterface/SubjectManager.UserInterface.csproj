@@ -81,6 +81,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\SubjectManager.Services\SubjectManager.Services.csproj" />
+      <ProjectReference Include="..\SubjectManager.Storage\SubjectManager.Storage.csproj" />
     </ItemGroup>
 
     <ItemGroup>

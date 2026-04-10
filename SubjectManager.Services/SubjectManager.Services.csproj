@@ -11,6 +11,11 @@
         <ProjectReference Include="..\SubjectManager.CommonComponents\SubjectManager.CommonComponents.csproj" />
         <ProjectReference Include="..\SubjectManager.DBModel\SubjectManager.DBModel.csproj" />
         <ProjectReference Include="..\SubjectManager.DTOModels\SubjectManager.DTOModels.csproj" />
+        <ProjectReference Include="..\SubjectManager.Storage\SubjectManager.Storage.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Maui.Essentials" Version="10.0.50" />
     </ItemGroup>
 
 </Project>

@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Services;
 using SubjectManager.Model.View;
 using System.Collections.ObjectModel;
+using SubjectManager.CommonComponents.Enum;
 using SubjectManager.UserInterface.Pages;
 
 namespace SubjectManager.UserInterface.ViewModels;
@@ -12,21 +13,12 @@ public partial class SubjectFullViewModel : ObservableObject
 {
     private readonly ISubjectService _subjectService;
     private readonly ILessonService _lessonService;
-    private string? _subjectId;
     private SubjectView? _subject;
 
     [ObservableProperty]
     private LessonListItem _selectedLesson;
     
-    public string? SubjectId
-    {
-        get => _subjectId;
-        set
-        {
-            _subjectId = value;
-            LoadSubject();
-        }
-    }
+    public string? SubjectId { get; set; }
 
     public SubjectView? Subject
     {
@@ -47,22 +39,27 @@ public partial class SubjectFullViewModel : ObservableObject
         _lessonService = lessonService;
     }
 
-    private void LoadSubject()
+    internal async Task LoadData()
     {
-        if (string.IsNullOrWhiteSpace(SubjectId) ||
-            !Guid.TryParse(SubjectId, out var id))
-            return;
+        try
+        {
+            var id = Guid.Parse(SubjectId);
 
-        Subject = _subjectService.GetSubjectById(id);
+            Subject = await _subjectService.GetSubjectByIdAsync(id);
 
-        Lessons.Clear();
+            _allLessons.Clear();
 
-        var lessons = _lessonService
-            .GetAllLessonsBySubjectId(id)
-            .Select(x => new LessonListItem(x));
+            var lessons = await _lessonService.GetAllLessonsBySubjectIdAsync(id);
 
-        foreach (var lesson in lessons)
-            Lessons.Add(lesson);
+            foreach (var lesson in lessons)
+                _allLessons.Add(new LessonListItem(lesson));
+
+            ApplyFilters();
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlertAsync("Error", $"Failed to load subject: {ex.Message}", "OK");
+        }
     }
 
     [RelayCommand]
@@ -73,8 +70,7 @@ public partial class SubjectFullViewModel : ObservableObject
             return;
         }
         
-        await Shell.Current.GoToAsync(
-            $"{nameof(LessonFullPage)}?lessonId={_selectedLesson.Id}");
+        await Shell.Current.GoToAsync($"{nameof(LessonFullPage)}?lessonId={_selectedLesson.Id}");
         
         _selectedLesson = null;
     }
@@ -83,5 +79,96 @@ public partial class SubjectFullViewModel : ObservableObject
     private async Task Back()
     {
         await Shell.Current.GoToAsync("..");
+    }
+    
+    [RelayCommand]
+    private async Task AddLesson()
+    {
+        if (string.IsNullOrEmpty(SubjectId))
+            return;
+
+        await Shell.Current.GoToAsync($"{nameof(LessonEditPage)}?subjectId={SubjectId}");
+    }
+
+    [RelayCommand]
+    private async Task EditLesson(LessonListItem lesson)
+    {
+        if (lesson == null)
+            return;
+
+        await Shell.Current.GoToAsync($"{nameof(LessonEditPage)}?lessonId={lesson.Id}&subjectId={Guid.Parse(SubjectId)}");
+    }
+
+    [RelayCommand]
+    private async Task DeleteLesson(LessonListItem lesson)
+    {
+        if (lesson == null)
+            return;
+
+        bool confirm = await Shell.Current.DisplayAlert(
+            "Delete",
+            "Are you sure?",
+            "Yes",
+            "No");
+
+        if (!confirm)
+            return;
+
+        await _lessonService.DeleteLessonAsync(lesson.Id.Value);
+
+        await LoadData();
+    }
+    
+    private List<LessonListItem> _allLessons = new();
+
+    [ObservableProperty]
+    private LessonType? selectedLessonType;
+
+    [ObservableProperty]
+    private DateTime beginDateFrom = DateTime.MinValue;
+
+    [ObservableProperty]
+    private DateTime beginDateTo = DateTime.MaxValue;
+
+    public List<LessonType> LessonTypes { get; } = Enum.GetValues(typeof(LessonType)).Cast<LessonType>().ToList();
+    
+    partial void OnSelectedLessonTypeChanged(LessonType? value)
+    {
+        ApplyFilters();
+    }
+
+    partial void OnBeginDateFromChanged(DateTime value)
+    {
+        ApplyFilters();
+    }
+
+    partial void OnBeginDateToChanged(DateTime value)
+    {
+        ApplyFilters();
+    }
+    
+    [RelayCommand]
+    private void ApplyFilters()
+    {
+        var filtered = _allLessons.AsEnumerable();
+
+        if (SelectedLessonType != null)
+            filtered = filtered.Where(l => l.LessonType == SelectedLessonType);
+
+        filtered = filtered.Where(l => l.BeginDate.Date >= BeginDateFrom.Date && l.BeginDate.Date <= BeginDateTo.Date);
+
+        Lessons.Clear();
+        foreach (var l in filtered)
+            Lessons.Add(l);
+    }
+    
+    [RelayCommand]
+    private void ClearFilters()
+    {
+        SelectedLessonType = null;
+        BeginDateFrom = DateTime.MinValue;
+        BeginDateTo = DateTime.MaxValue;
+
+        ApplyFilters();
     }
 }

@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubjectManager.UserInterfac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubjectManager.DTOModels", "SubjectManager.DTOModels\SubjectManager.DTOModels.csproj", "{C44EB8E0-FFF8-4284-B88E-6C7C1607B7B2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubjectManager.Storage", "SubjectManager.Storage\SubjectManager.Storage.csproj", "{D3497D01-D582-476E-8331-8F7EFF5CC07A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{C44EB8E0-FFF8-4284-B88E-6C7C1607B7B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C44EB8E0-FFF8-4284-B88E-6C7C1607B7B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C44EB8E0-FFF8-4284-B88E-6C7C1607B7B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3497D01-D582-476E-8331-8F7EFF5CC07A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3497D01-D582-476E-8331-8F7EFF5CC07A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3497D01-D582-476E-8331-8F7EFF5CC07A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3497D01-D582-476E-8331-8F7EFF5CC07A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

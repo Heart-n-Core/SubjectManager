@@ -4,7 +4,7 @@ namespace SubjectManager.Model.Entity;
 
 public class LessonEntity
 {
-    public Guid Id { get;}
+    public Guid Id { get; set; }
     public Guid SubjectId { get; set; }
     public string Topic { get; set; }
     public LessonType  LessonType { get; set; }

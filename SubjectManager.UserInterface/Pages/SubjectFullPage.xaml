@@ -18,6 +18,24 @@
 
             <Label Text="Lessons:" FontAttributes="Bold" Margin="0,20,0,0"/>
 
+            <HorizontalStackLayout Spacing="10">
+                <Button Text="Add Lesson" Command="{Binding AddLessonCommand}" />
+                <!-- <Button Text="Edit Lesson" Command="{Binding EditLessonCommand}" /> -->
+                <!-- <Button Text="Delete Lesson" Command="{Binding DeleteLessonCommand}" /> -->
+            </HorizontalStackLayout>
+            <Label Text="Filters" FontAttributes="Bold" Margin="0,10,0,0"/>
+
+            <HorizontalStackLayout Spacing="10">
+                <Picker Title="Lesson Type"
+                        ItemsSource="{Binding LessonTypes}"
+                        SelectedItem="{Binding SelectedLessonType}" />
+
+                <DatePicker Date="{Binding BeginDateFrom}" />
+                <DatePicker Date="{Binding BeginDateTo}" />
+
+                <Button Text="Clear Filters" Command="{Binding ClearFiltersCommand}" />
+            </HorizontalStackLayout>
+            
             <CollectionView
                 ItemsSource="{Binding Lessons}"
                 SelectionMode="Single"
@@ -30,6 +48,18 @@
                             <VerticalStackLayout>
                                 <Label Text="{Binding BeginDate}" />
                                 <Label Text="{Binding LessonType}" />
+                                
+                                <HorizontalStackLayout Spacing="10">
+                                    <Button
+                                        Text="Edit"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SubjectFullViewModel}}, Path=EditLessonCommand}"
+                                        CommandParameter="{Binding .}" />
+
+                                    <Button
+                                        Text="Delete"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SubjectFullViewModel}}, Path=DeleteLessonCommand}"
+                                        CommandParameter="{Binding .}" />
+                                </HorizontalStackLayout>
                             </VerticalStackLayout>
                         </Frame>
                     </DataTemplate>

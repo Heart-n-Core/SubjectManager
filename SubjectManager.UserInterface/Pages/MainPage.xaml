@@ -10,8 +10,26 @@
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior EventName="Appearing" Command="{Binding LoadSubjectsCommand}" />
     </ContentPage.Behaviors>
+    
+<ScrollView>
+    <VerticalStackLayout Padding="20" Spacing="10">
 
-    <Grid>
+        <!-- Add / Search / Filter -->
+        <Button Text="Add Subject" Command="{Binding AddSubjectCommand}" Margin="10"/>
+
+        <SearchBar Placeholder="Search by name"
+                   Text="{Binding SearchText, Mode=TwoWay}"
+                   SearchCommand="{Binding ApplyFiltersCommand}" />
+
+        <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+            <Picker Title="Filter by Field"
+                    ItemsSource="{Binding Fields}"
+                    SelectedItem="{Binding SelectedField, Mode=TwoWay}" />
+            <Button Text="Clear Name Filter" Command="{Binding ClearSearchCommand}" />
+            <Button Text="Clear Field of knowledge Filter" Command="{Binding ClearFieldFilterCommand}" />
+            <Button Text="Clear All Filters" Command="{Binding ClearAllFiltersCommand}" />
+        </HorizontalStackLayout>
+
         <CollectionView
             ItemsSource="{Binding Subjects}"
             SelectionMode="Single"
@@ -24,10 +42,23 @@
                         <VerticalStackLayout>
                             <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold" />
                             <Label Text="{Binding FieldOfKnowledge, Converter={StaticResource CamelCaseConverter}}" FontSize="14" />
+                            
+                            <HorizontalStackLayout Spacing="10">
+                                <Button
+                                    Text="Edit"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:MainPageViewModel}}, Path=EditSubjectCommand}"
+                                    CommandParameter="{Binding .}" />
+
+                                <Button
+                                    Text="Delete"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:MainPageViewModel}}, Path=DeleteSubjectCommand}"
+                                    CommandParameter="{Binding .}" />
+                            </HorizontalStackLayout>
                         </VerticalStackLayout>
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </Grid>
+    </VerticalStackLayout>
+</ScrollView>
 </ContentPage>

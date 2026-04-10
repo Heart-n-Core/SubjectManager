@@ -4,15 +4,13 @@ using SubjectManager.Model.View;
 
 public interface ILessonService
 {
-    List<LessonView> GetAllLessons();
+    Task<IEnumerable<LessonView>> GetAllLessonsBySubjectIdAsync(Guid subjectId);
 
-    List<LessonView> GetAllLessonsBySubjectId(Guid subjectId);
+    Task<LessonView> GetLessonByIdAsync(Guid id);
 
-    LessonView GetLessonById(Guid id);
+    Task CreateLessonAsync(LessonView view);
 
-    void CreateLesson(LessonView view);
+    Task UpdateLessonAsync(LessonView view);
 
-    void UpdateLesson(LessonView view);
-
-    void DeleteLesson(Guid id);
+    Task DeleteLessonAsync(Guid id);
 }

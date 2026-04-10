@@ -4,13 +4,13 @@ using SubjectManager.Model.View;
 
 public interface ISubjectService
 {
-    List<SubjectView> GetAllSubjects();
 
-    SubjectView GetSubjectById(Guid id);
+    IAsyncEnumerable<SubjectView>GetAllSubjectsAsync();
 
-    void CreateSubject(SubjectView view);
+    Task<SubjectView> GetSubjectByIdAsync(Guid id);
 
-    void UpdateSubject(SubjectView view);
+    Task CreateSubjectAsync(SubjectView view);
+    Task UpdateSubjectAsync(SubjectView view);
 
-    void DeleteSubject(Guid id);
+    Task DeleteSubjectAsync(Guid id);
 }

@@ -4,7 +4,7 @@ namespace SubjectManager.Model.Entity;
 
 public class SubjectEntity
 {
-    public Guid Id { get;}
+    public Guid Id { get; set; }
     public string Name { get; set; }
     public int Credits { get; set; }
     public FieldOfKnowledge FieldOfKnowledge { get; set; }
@@ -13,9 +13,13 @@ public class SubjectEntity
     {
     }
 
-    public SubjectEntity(string name, int credits, FieldOfKnowledge fieldOfKnowledge)
+    public SubjectEntity(string name, int credits, FieldOfKnowledge fieldOfKnowledge) : this(Guid.NewGuid(), name, credits, fieldOfKnowledge)
     {
-        Id = Guid.NewGuid();
+    }
+
+    public SubjectEntity(Guid id, string name, int credits, FieldOfKnowledge fieldOfKnowledge)
+    {
+        Id = id;
         Name = name;
         Credits = credits;
         FieldOfKnowledge = fieldOfKnowledge;

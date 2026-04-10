@@ -9,19 +9,10 @@ namespace SubjectManager.UserInterface.ViewModels;
 public partial class LessonFullViewModel : ObservableObject
 {
     private readonly ILessonService _lessonService;
-    private string? _lessonId;
     private LessonView? _lesson;
     
-    public string? LessonId
-    {
-        get => _lessonId;
-        set
-        {
-            _lessonId = value;
-            LoadLesson();
-        }
-    }
-    
+    public string? LessonId { get; set; }
+
     public LessonView? Lesson
     {
         get => _lesson;
@@ -37,13 +28,19 @@ public partial class LessonFullViewModel : ObservableObject
         _lessonService = lessonService;
     }
 
-    private void LoadLesson()
+    internal async Task LoadData()
     {
-        if (string.IsNullOrWhiteSpace(LessonId) ||
-            !Guid.TryParse(LessonId, out var id))
-            return;
+        
+        try
+        {
+            var id = Guid.Parse(LessonId);
+            Lesson = await _lessonService.GetLessonByIdAsync(id);
 
-        Lesson = _lessonService.GetLessonById(id);
+        }       catch
+            (Exception ex)
+        {
+            await Shell.Current.DisplayAlertAsync("Error", $"Failed to load lesson: {ex.Message}", "OK");
+        }
     }
 
     [RelayCommand]

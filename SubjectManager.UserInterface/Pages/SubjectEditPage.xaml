@@ -1,0 +1,25 @@
+﻿<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:SubjectManager.UserInterface.ViewModels"
+    x:Class="SubjectManager.UserInterface.Pages.SubjectEditPage"
+    x:DataType="viewModels:SubjectEditViewModel"
+    Title="Subject">
+
+    <VerticalStackLayout Padding="20" Spacing="10">
+
+        <Entry Placeholder="Name" Text="{Binding Name}" />
+
+        <Entry Placeholder="Credits"
+               Keyboard="Numeric"
+               Text="{Binding Credits}" />
+
+        <Picker Title="Field"
+                ItemsSource="{Binding Fields}"
+                SelectedItem="{Binding SelectedField}" />
+
+        <Button Text="Save" Command="{Binding SaveCommand}" />
+        <Button Text="Cancel" Command="{Binding CancelCommand}" />
+
+    </VerticalStackLayout>
+</ContentPage>
